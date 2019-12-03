@@ -4,8 +4,8 @@ import Button from "../../atoms/Button";
 const Header = ({ handleSort, loading }) => {
 	return (
 		<div className="flex w-full fixed right-0 left-0 z-40 shadow-lg top-0  items-center h-12 py-4 pl-4">
-			<p className="w-8/12 italic">Ascii Faces</p>
-			<div className="flex bg-green-400 w-4/12 p-3">
+			<p className="w-7/12 italic">Ascii Faces</p>
+			<div className="flex bg-green-400 w-5/12 p-3">
 				<p className="w-6/12 text-white uppercase tracking-wide text-base">
 					Sort By:{" "}
 				</p>

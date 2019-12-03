@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { withRouter, Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { withRouter } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { BASE_URL } from "../../../../config";
 import { arrOfSizes, convertToDaysAgo } from "../../../../utils";
@@ -12,9 +12,10 @@ const Modal = ({ match, history }) => {
 	const [notFound, setNotFound] = useState(false);
 	const [size, setSize] = useState("");
 
+	const indicatorRef = useRef(null);
+
 	useEffect(() => {
 		if (match.params.id) {
-			console.log("ABOUT TO CONSOLE THIS");
 			setDetails({});
 			fetchImage();
 		}
@@ -38,10 +39,9 @@ const Modal = ({ match, history }) => {
 	};
 
 	return ReactDOM.createPortal(
-		<section className="  z-50 w-full h-screen flex flex-col justify-center items-center fixed top-0 left-0 right-0 bottom-0 overflow-hidden  modal p-12">
+		<section className=" w-full h-screen flex flex-col justify-center items-center fixed top-0 left-0 right-0 bottom-0 overflow-hidden  modal p-12">
 			<Button
 				onClick={() => {
-					console.log("the value of history>>>>>>>", history);
 					return history.push("/#/");
 				}}
 				aria-label="close"
@@ -84,12 +84,28 @@ const Modal = ({ match, history }) => {
 						<Button
 							title="Buy Now"
 							classes="mt-6 bg-green-500 px-3 text-white text-lg font-semibold py-2 hover:bg-green-700"
+							onClick={() => {
+								indicatorRef.current.classList.remove(
+									"invisible"
+								);
+								setTimeout(() => {
+									indicatorRef.current.classList.add(
+										"invisible"
+									);
+								}, 1000);
+							}}
 						/>
+						<p
+							className="text-red-300 invisible"
+							ref={indicatorRef}
+						>
+							Item is not available for sale at the moment
+						</p>
 					</div>
 				</div>
 			)}
 			{!notFound && !Object.keys(details).length && (
-				<div className="w-full flex justify-center items-center mx-auto mt-10">
+				<div className="w-full flex justify-center items-center mx-auto mt-16">
 					<Loader />
 				</div>
 			)}

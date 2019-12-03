@@ -10,8 +10,6 @@ const Routes = () => {
 			<div>
 				<Switch>
 					<Route path="/" component={Home} />
-					{/* <Route path="/deals/:id" component={Modal} /> */}
-
 					<Route path="*" component={NotFound} />
 				</Switch>
 			</div>

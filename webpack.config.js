@@ -19,16 +19,6 @@ module.exports = () => {
 					exclude: /node_modules/,
 					use: ["babel-loader"],
 				},
-				// {
-				// 	test: /\.css$/,
-				// 	include: path.resolve(__dirname, "src"),
-				// 	exclude: /node_modules/,
-				// 	use: ["style-loader", "css-loader"],
-				// },
-				// {
-				// 	test: /\.css$/,
-				// 	use: ["css-loader", "postcss-loader"],
-				// },
 				{
 					test: /\.(css|scss|sass)/i,
 					use: [

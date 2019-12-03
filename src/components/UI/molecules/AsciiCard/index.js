@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
-import { Link, Route } from "react-router-dom";
-import Modal from "../../../UI/organisms/Modal";
+import { Link } from "react-router-dom";
 import { centToDollar, convertToDaysAgo } from "../../../../utils";
 
 const AsciiCard = ({ size, date, id, price, face }) => {
@@ -9,7 +8,7 @@ const AsciiCard = ({ size, date, id, price, face }) => {
 	return (
 		<div
 			ref={pageRef}
-			className="border-gray-100 m-3 shadow-md w-2/7 border flex bg-white flex-col justify-center items-center h-48"
+			className="border-gray-100 m-3 shadow-md w-full lg:w-2/7 border flex bg-white flex-col justify-center items-center h-56"
 		>
 			{" "}
 			<div className="ascii-container my-2 hover:border face hide-image">
@@ -22,7 +21,7 @@ const AsciiCard = ({ size, date, id, price, face }) => {
 					</p>
 					<p>current size: {size}px</p>
 				</div>
-				<div className="flex justify-center items-center">
+				<div className="flex flex-col justify-between items-center">
 					<p className="mr-4 text-blue-500">{centToDollar(price)}</p>
 					<Link
 						className="px-3 py-1 bg-green-300 rounded shadow-md cursor-pointer text-white hover:bg-green-700"
