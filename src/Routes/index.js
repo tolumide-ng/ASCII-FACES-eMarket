@@ -9,8 +9,8 @@ const Routes = () => {
 		<HashRouter>
 			<div>
 				<Switch>
-					<Route path="/" exact component={Home} />
-					<Route path="/deals/:id" component={Modal} />
+					<Route path="/" component={Home} />
+					{/* <Route path="/deals/:id" component={Modal} /> */}
 
 					<Route path="*" component={NotFound} />
 				</Switch>

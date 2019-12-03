@@ -1,30 +1,24 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { BASE_URL } from "../../../config";
+import { Route } from "react-router-dom";
 import AsciiContainer from "../../../components/UI/organisms/AsciiContainer";
 import Loader from "../../UI/atoms/Loader";
 import Header from "../../UI/molecules/Header";
+import Modal from "../../UI/organisms/Modal";
 
 const END = "~ end of catalogue ~";
 
-function toggleGrow(entry) {
-	entry.forEach(change => {
-		if (change.isIntersecting) {
-			return change.target.classList.add("grow");
-		}
-		return change.target.classList.remove("grow");
-	});
-}
-
 const Home = ({ match }) => {
 	const [deals, setDeals] = useState([]);
-	const [page, setPage] = useState(0);
+	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(20);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState("done");
 	const [advert, setAdvert] = useState([]);
-	// const [baseUrl, setBaseUrl] = useState(`${BASE_URL}`);
 	const [sortVal, setSortVal] = useState("");
-	const [firstLoad, setFirstLoad] = useState(true);
 	const [preFetchedDeals, setPreFetchedDeals] = useState([]);
+	const [watchSort, setWatchSort] = useState(false);
+
+	const watchLoadedValues = useMemo(() => deals, []);
 
 	// Using an event listener that detects scroll would be wasteful as it runs on every px scroll, we would be using the Intersection observer API
 	const scrollObserver = createScrollObserver();
@@ -44,31 +38,53 @@ const Home = ({ match }) => {
 		};
 	}, []);
 
-	// useEffect(() => {
-	// 	// Load more data when the user is almost at the end of the screen
-	// 	fetchDeals(false);
-	// }, [page]);
+	useEffect(() => {
+		setDeals(deals => [...deals, ...preFetchedDeals]);
+		setPreFetchedDeals([]);
+	}, [page]);
 
 	useEffect(() => {
 		// Load more data when the user is almost at the end of the screen
-		fetchDeals(true);
+		(async () => {
+			if (watchSort) {
+				setPage(1);
+				setWatchSort(false);
+			}
+
+			let url = getUrl();
+
+			const response = await getData(url);
+
+			const result = loadIntoRows(response);
+
+			setDeals(result);
+		})();
 	}, [sortVal]);
 
 	requestIdleCallback(
 		async () => {
-			if (!preFetchedDeals.length) {
-				setPage(page => (page += 1));
-				await fetchDeals();
+			if (deals.length > 1 && preFetchedDeals.length < 1) {
+				let url = getUrl();
+				const response = await getData(url);
+				const result = loadIntoRows(response);
+				setPreFetchedDeals(result);
 			}
 		},
 		{ timeout: 40 }
 	);
 
+	// IntersectionObserver
+	function fetchMore([entry]) {
+		if (entry.isIntersecting && entry.intersectionRatio === 1) {
+			setPage(page => (page += 1));
+		}
+	}
+
 	// Display data based on users choice
 	const handleSort = sortBy => {
-		console.log("I have been called with sort by", sortBy);
 		setDeals([]);
-		setLoading(true);
+		// setLoading("loading");
+		setWatchSort(true);
 		if (sortBy === "price") {
 			setSortVal("price");
 		} else if (sortBy === "id") {
@@ -78,30 +94,28 @@ const Home = ({ match }) => {
 		}
 	};
 
-	const fetchDeals = async changed => {
-		if (firstLoad) {
-			setLoading(true);
-		}
-
+	const getUrl = () => {
 		const url = `${BASE_URL}?_page=${page}&_limit=${limit}${
 			sortVal ? `&_sort=${sortVal}` : ""
 		}`;
+		return url;
+	};
 
+	const getData = async url => {
 		const response = await fetch(url);
 
 		const generatedAd = await fetch(
 			`${BASE_URL}/ads/?r=${Math.floor(Math.random() * 100)}`
 		);
 
-		const result = await response.json();
-
 		setAdvert(prevAds => [...prevAds, generatedAd.url]);
 
-		loadIntoRows(result);
-		console.log("this is another data running ?>>>>>>>>>>>>>");
+		const result = await response.json();
+
+		return result;
 	};
 
-	async function loadIntoRows(deals) {
+	function loadIntoRows(deals) {
 		const rows = [];
 
 		if (deals.length) {
@@ -110,20 +124,15 @@ const Home = ({ match }) => {
 			}
 
 			// setDeals(prevDeals => [...prevDeals, ...rows]);
-			if (firstLoad) {
-				setDeals(rows);
-				setLoading(false);
-				setFirstLoad(false);
-			} else {
-				setPreFetchedDeals(rows);
-			}
+			return rows;
 		}
-		// return rows;
 	}
 
 	function createDealObserver() {
-		let options = { threshold: [0] };
-		return new IntersectionObserver(toggleGrow, options);
+		let options = {
+			threshold: [0],
+		};
+		// return new IntersectionObserver(controlModal, options);
 	}
 
 	function createScrollObserver() {
@@ -131,20 +140,9 @@ const Home = ({ match }) => {
 		return new IntersectionObserver(fetchMore, options);
 	}
 
-	// REQUEST IDLE FRAME, FETCH MORE DATA WHEN THE BROWSER IS LESIDLE I.E. NOT BUSY
-
-	function fetchMore([entry]) {
-		if (entry.isIntersecting && entry.intersectionRatio === 1) {
-			setDeals(prevDeals => [...prevDeals, ...preFetchedDeals]);
-			setPreFetchedDeals([]);
-			// setPage(page => (page += 1));
-			// APPEND THE PREFETCHED DATA AT THIS POINT
-			//  if the cache is emptu ignite the addition of the new daya
-			// EMPTY THE CACHE, THE REQUEST IDLE FRAME WAITS UNTIL THE BROSER IS IDLE AGAIN, BEFORE IT PREFETCHES DATA
-		}
+	function closeModal() {
+		history.push("/");
 	}
-
-	// [SCALABILITY] Using redux in this project would have made it easier to pass the functions and I would have been able to abstract the header into the router where I can check the url and display the header if it is supposed to be displayed on such page
 
 	return (
 		<>
@@ -156,8 +154,8 @@ const Home = ({ match }) => {
 							<div key={index}>
 								<AsciiContainer
 									dealRow={dealRow}
-									observer={dealObserver}
 									match={match}
+									observer={dealObserver}
 								/>
 								{index % 5 === 4 && (
 									<div className="w-full flex justify-center items-center mb-4">
@@ -170,13 +168,19 @@ const Home = ({ match }) => {
 							</div>
 						);
 					})}
-				{Boolean(loading) && (
-					<div className="w-full flex justify-center items-center mx-auto mt-10">
+				<Route
+					path="/:id"
+					render={routerProps => (
+						<Modal {...routerProps} close={closeModal} />
+					)}
+				/>
+				{!deals.length && (
+					<div className="w-full flex justify-center items-center mx-auto h-screen">
 						<Loader />
 					</div>
 				)}
 			</div>
-			{/* {deals && deals.length === 500 / 4 && <p>{END}</p>} */}
+			{deals && deals.length === 500 / 4 && <p>{END}</p>}
 			<span className="bottom" ref={gridRef} />
 		</>
 	);

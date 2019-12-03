@@ -1,9 +1,9 @@
-.hide {
-	transform: scale(0);
-	opacity: 0;
+:root {
+	--primary-color: #282c34;
+	--primary-text: #ffffff;
 }
 
-.show {
-	transform: scale(1);
-	opacity: 1;
+.modal {
+	background-color: rgba(31, 42, 65, 0.8);
+	z-index: 1000;
 }

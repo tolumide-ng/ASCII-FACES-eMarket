@@ -1,11 +1,10 @@
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef } from "react";
+import { Link, Route } from "react-router-dom";
+import Modal from "../../../UI/organisms/Modal";
 import { centToDollar, convertToDaysAgo } from "../../../../utils";
 
 const AsciiCard = ({ size, date, id, price, face }) => {
 	const pageRef = useRef(null);
-
-	const [showModal, setShowModal] = useState(false);
 
 	return (
 		<div
@@ -26,8 +25,8 @@ const AsciiCard = ({ size, date, id, price, face }) => {
 				<div className="flex justify-center items-center">
 					<p className="mr-4 text-blue-500">{centToDollar(price)}</p>
 					<Link
-						className="px-3 py-1 bg-green-300 rounded shadow-md cursor-pointer text-white"
-						to={`deals/${id}`}
+						className="px-3 py-1 bg-green-300 rounded shadow-md cursor-pointer text-white hover:bg-green-700"
+						to={`/${id}`}
 					>
 						Options
 					</Link>

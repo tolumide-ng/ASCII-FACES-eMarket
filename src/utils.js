@@ -2,7 +2,7 @@
 
 export const arrOfSizes = () => {
 	let sizes = [];
-	for (let i = 12; i <= 200; i++) {
+	for (let i = 12; i <= 150; i++) {
 		sizes.push(i);
 	}
 	return sizes;
