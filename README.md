@@ -26,13 +26,15 @@ To get a local copy up and running follow these simple steps.
 git clone https:://github.com/andela/demeter-ah-frontend.git
 ```
 
-2. Install NPM packages
+2. Create a Local `.env` file as explained in the `.env.sample` of this repo and add `NODE_ENV='development` to the file
+
+3. Install NPM packages
 
 ```
 npm install
 ```
 
-3. Start the Project
+4. Start the Project
 
 ```
 npm start
@@ -44,5 +46,6 @@ npm run dev
 
 ## Acknowledgements
 
-_[developers.google](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
-_[MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) \*[W3.org](https://www.w3.org/TR/requestidlecallback/)
+1. [developers.google](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
+2. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
+3. [W3.org](https://www.w3.org/TR/requestidlecallback/)
