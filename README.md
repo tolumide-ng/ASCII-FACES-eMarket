@@ -18,6 +18,12 @@
 
 To get a local copy up and running follow these simple steps.
 
+## Requirement
+
+1. Please ensure you are connected to the internet
+2. Ensure you set up your `.env` file as illustrated in Installation below
+
+
 ## Installation
 
 1. Clone the repo
@@ -32,15 +38,20 @@ git clone https:://github.com/andela/demeter-ah-frontend.git
 npm install
 ```
 
-3. Start the Project
+3. Setup a `.env` file as illustrated in the `.env.sample` file, set `NODE_ENV='development'`
+
+4. Start the backend on one terminal
 
 ```
-npm start
+npm run start
 ```
 
+5. Start the frontend on a second terminal
 ```
 npm run dev
 ```
+
+
 
 ## Acknowledgements
 

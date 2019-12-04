@@ -40,7 +40,44 @@ export const convertToDaysAgo = (createdDate) => {
     if (daysAgo === 0) {
       return 'Today';
     }
-    return `${daysAgo} days ago`;
+    return `${daysAgo} day(s) ago`;
   }
   return 'You need to pass a valid date';
 };
+
+export const getData = async (url, getAds) => {
+  const response = await fetch(url);
+
+  await getAds();
+
+  const result = await response.json();
+
+  return result;
+};
+
+export const loadIntoRows = (deals) => {
+  const rows = [];
+
+  if (deals.length) {
+    for (let i = 0; i < deals.length; i += 4) {
+      rows.push(deals.slice(i, i + 4));
+    }
+    return rows;
+  }
+};
+
+export const closeModal = () => {
+  history.push('/');
+};
+
+
+export const respondToButtonClick = (indicatorRef) => {
+  indicatorRef.current.classList.remove(
+    "invisible"
+  );
+  setTimeout(() => {
+    indicatorRef.current.classList.add(
+      "invisible"
+    );
+  }, 1000);
+}

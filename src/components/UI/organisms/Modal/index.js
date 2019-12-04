@@ -4,8 +4,9 @@ import ReactDOM from "react-dom";
 import BASE_URL from "../../../../config";
 import { arrOfSizes, convertToDaysAgo } from "../../../../utils";
 import Loader from "../../atoms/Loader";
-import "./index.css";
+import "./index.scss";
 import Button from "../../atoms/Button";
+import {respondToButtonClick} from '../../../../utils'
 
 const Modal = ({ match, history }) => {
 	const [details, setDetails] = useState({});
@@ -13,11 +14,13 @@ const Modal = ({ match, history }) => {
 	const [size, setSize] = useState("");
 
 	const indicatorRef = useRef(null);
+	const closeModalRef = useRef(null)
 
 	useEffect(() => {
 		if (match.params.id) {
 			setDetails({});
 			fetchImage();
+			closeModalRef.current.focus()
 		}
 	}, []);
 
@@ -38,15 +41,21 @@ const Modal = ({ match, history }) => {
 		setSize(e.target.value);
 	};
 
+
+
 	return ReactDOM.createPortal(
 		<section className=" w-full h-screen flex flex-col justify-center items-center fixed top-0 left-0 right-0 bottom-0 overflow-hidden  modal p-12">
 			<Button
-				onClick={() => {
+				props={{
+					onClick: () => {
 					return history.push("/#/");
-				}}
-				aria-label="close"
-				className="bg-white p-4 rounded-full absolute top-0 right-0 mr-12"
-				title="X"
+				},
+				"aria-label": "close",
+				className: "bg-white p-4 rounded-full absolute top-0 right-0 outline-color mr-12",
+				title: "X",
+				type: "button"
+			}}
+				ref={closeModalRef}
 			/>
 			{Boolean(Object.keys(details).length) && (
 				<div className="flex w-10/12 bg-white h-screen rounded-lg shadow-md">
@@ -81,22 +90,9 @@ const Modal = ({ match, history }) => {
 								})}
 							</select>
 						</form>
-						<Button
-							title="Buy Now"
-							classes="mt-6 bg-green-500 px-3 text-white text-lg font-semibold py-2 hover:bg-green-700"
-							onClick={() => {
-								indicatorRef.current.classList.remove(
-									"invisible"
-								);
-								setTimeout(() => {
-									indicatorRef.current.classList.add(
-										"invisible"
-									);
-								}, 1000);
-							}}
-						/>
+						<Button props={{ title: "Buy Now", type: "submit", classes: "mt-6 bg-green-500 px-3 text-white text-lg font-semibold py-2 hover:bg-green-700", onClick: () => respondToButtonClick(indicatorRef)}}/>
 						<p
-							className="text-red-300 invisible"
+							className="text-red-300 invisible mt-4"
 							ref={indicatorRef}
 						>
 							Item is not available for sale at the moment

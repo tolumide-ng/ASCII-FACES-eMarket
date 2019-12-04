@@ -5,6 +5,7 @@ import AsciiContainer from '../../../components/UI/organisms/AsciiContainer';
 import Loader from '../../UI/atoms/Loader';
 import Header from '../../UI/molecules/Header';
 import Modal from '../../UI/organisms/Modal';
+import {getData, loadIntoRows, closeModal} from '../../../utils'
 
 const END = '~ end of catalogue ~';
 
@@ -56,7 +57,7 @@ const Home = ({ match }) => {
     // Load more data when the user is almost at the end of the screen
     (async () => {
       let url = getUrl();
-      const response = await getData(url);
+      const response = await getData(url, getAds);
       const result = loadIntoRows(response);
         setDeals(result);
         setFirstLoad(false)
@@ -68,11 +69,10 @@ const Home = ({ match }) => {
 
   requestIdleCallback(
     async () => {
-
       if (deals.length > 1 && !preFetchedDeals && runRef.current) {
         let url = getUrl();
         runRef.current = false;
-        const response = await getData(url);
+        const response = await getData(url, getAds);
         const result = loadIntoRows(response);
         setPreFetchedDeals(result);
       }
@@ -91,6 +91,11 @@ const Home = ({ match }) => {
   const handleSort = sortBy => {
     setDeals([]);
     setPage(1);
+    // setSortVal('')
+    setPreFetchedDeals(null);
+    runRef.current = true;
+
+
     if (sortBy === 'price') {
       setSortVal('price');
     } else if (sortBy === 'id') {
@@ -117,38 +122,10 @@ const Home = ({ match }) => {
     setAdvert(prevAds => [...prevAds, generatedAd.url]);
   };
 
-  const getData = async url => {
-    const response = await fetch(url);
-
-    await getAds();
-
-    const result = await response.json();
-
-
-    return result;
-  };
-
-  function loadIntoRows(deals) {
-    const rows = [];
-
-    if (deals.length) {
-      for (let i = 0; i < deals.length; i += 4) {
-        rows.push(deals.slice(i, i + 4));
-      }
-      return rows;
-    }
-  }
-
-
-
-  function closeModal() {
-    history.push('/');
-  }
-
   return (
     <>
       <div className="px-6 mx-4 pt-10">
-        <Header handleSort={handleSort} loading={loading} />
+        <Header handleSort={handleSort} loading={loading} sortVal={sortVal} />
         {Boolean(deals.length) &&
           deals.map((dealRow, index = 1) => {
             return (
