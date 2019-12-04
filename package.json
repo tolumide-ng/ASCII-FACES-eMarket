@@ -7,8 +7,8 @@
 	"scripts": {
 		"start": "json-server server/index.js --routes server/routes.json --middlewares server/handle-delay.js server/handle-ads.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "rm -f ./public/bundle.js && webpack",
-		"dev": "webpack-dev-server --mode=development",
+		"build": "rm -f ./public/bundle.js && webpack --mode production",
+		"dev": "webpack-dev-server --mode development",
 		"lint:fix": "prettier-eslint \"**/*.{js,json}\" --write",
 		"prettier": "prettier **/**/*.{js,json} --write",
 		"lint": "eslint --init"
