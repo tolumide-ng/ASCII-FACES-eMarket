@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import ReactDOM from "react-dom";
-import { BASE_URL } from "../../../../config";
+import BASE_URL from "../../../../config";
 import { arrOfSizes, convertToDaysAgo } from "../../../../utils";
 import Loader from "../../atoms/Loader";
 import "./index.css";
