@@ -1,9 +1,0 @@
-:root {
-	--primary-color: #282c34;
-	--primary-text: #ffffff;
-}
-
-.modal {
-	background-color: rgba(31, 42, 65, 0.8);
-	z-index: 1000;
-}

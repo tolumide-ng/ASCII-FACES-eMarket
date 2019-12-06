@@ -18,6 +18,12 @@
 
 To get a local copy up and running follow these simple steps.
 
+## Requirement
+
+1. Please ensure you are connected to the internet
+2. Ensure you set up your `.env` file as illustrated in Installation below
+
+
 ## Installation
 
 1. Clone the repo
@@ -34,18 +40,27 @@ git clone https:://github.com/andela/demeter-ah-frontend.git
 npm install
 ```
 
-4. Start the Project
+3. Setup a `.env` file as illustrated in the `.env.sample` file, set `NODE_ENV='development'` to setup a development environment
 
+4. Start the backend on one terminal
 ```
-npm start
+npm run start
 ```
 
+5. Start the frontend on a second terminal
 ```
 npm run dev
 ```
 
+6. On your browser visit >>> http://localhost:8080/
+
+
+
 ## Acknowledgements
 
-1. [developers.google](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
-2. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
-3. [W3.org](https://www.w3.org/TR/requestidlecallback/)
+1. [developers.google - Using Request idleCallback](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
+2. [MDN - requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
+3. [W3.org - requestIdleCallback](https://www.w3.org/TR/requestidlecallback/)
+
+** Please Note:
+==> This browser currently have no support for older broswers that does not support requestIdlecallback
