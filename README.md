@@ -63,4 +63,4 @@ npm run dev
 3. [W3.org - requestIdleCallback](https://www.w3.org/TR/requestidlecallback/)
 
 ** Please Note:
-==> This browser currently have no support for older broswers that does not support requestIdlecallback
+==> This project currently have no support for older broswers that does not support requestIdlecallback
