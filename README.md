@@ -32,16 +32,17 @@ To get a local copy up and running follow these simple steps.
 git clone https:://github.com/andela/demeter-ah-frontend.git
 ```
 
-2. Install NPM packages
+2. Create a Local `.env` file as explained in the `.env.sample` of this repo and add `NODE_ENV='development` to the file
+
+3. Install NPM packages
 
 ```
 npm install
 ```
 
-3. Setup a `.env` file as illustrated in the `.env.sample` file, set `NODE_ENV='development'`
+3. Setup a `.env` file as illustrated in the `.env.sample` file, set `NODE_ENV='development'` to setup a development environment
 
 4. Start the backend on one terminal
-
 ```
 npm run start
 ```
@@ -51,9 +52,15 @@ npm run start
 npm run dev
 ```
 
+6. On your browser visit >>> http://localhost:8080/
+
 
 
 ## Acknowledgements
 
-_[developers.google](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
-_[MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) \*[W3.org](https://www.w3.org/TR/requestidlecallback/)
+1. [developers.google - Using Request idleCallback](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
+2. [MDN - requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
+3. [W3.org - requestIdleCallback](https://www.w3.org/TR/requestidlecallback/)
+
+** Please Note:
+==> This browser currently have no support for older broswers that does not support requestIdlecallback
