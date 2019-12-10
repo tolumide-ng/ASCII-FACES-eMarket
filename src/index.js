@@ -1,10 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import morgan from 'morgan';
 import dotenv from 'dotenv';
 
-// import Routes from './routes/v1/index';
+import Routes from './routes/v1/index';
 
 dotenv.config();
 
@@ -21,7 +20,7 @@ app.use(
   }),
 );
 
-// Routes(app);
+Routes(app);
 
 app.use('/', (req, res) => {
   res.status(200).json({
